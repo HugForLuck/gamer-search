@@ -1,1 +1,23 @@
-<h1>HOME</h1>
+<div class="home-container">
+  <nav class="sidenav">
+    <ul>
+      @for (section of sections; track section.id) {
+      <li>
+        <a
+          [href]="'#' + section.id"
+          [class.active]="activeSectionId === section.id"
+          >{{ section.name }}</a
+        >
+      </li>
+      }
+    </ul>
+  </nav>
+
+  <main class="content">
+    @for (section of sections; track section.id) {
+    <section #section [id]="section.id">
+      <h1>{{ section.name }}</h1>
+    </section>
+    }
+  </main>
+</div>

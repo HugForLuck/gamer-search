@@ -1,5 +1,9 @@
-@if ((isLoading$ | async) === false) {
-<router-outlet />
-} @else {
-<app-splashscreen />
-}
+<div class="animation-container">
+  @if ((isLoading$ | async) === false) {
+  <div @fade class="router-wrapper">
+    <router-outlet />
+  </div>
+  } @else {
+  <app-splashscreen @fade />
+  }
+</div>

@@ -1,0 +1,108 @@
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+:host {
+  display: block;
+  padding: 2rem;
+}
+
+.home-container {
+  display: flex;
+  gap: 3rem;
+}
+
+/* Sidenav Styling */
+.sidenav {
+  /* Macht die Navigation "sticky", sodass sie beim Scrollen an Ort und Stelle bleibt */
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start; /* Verhindert, dass die Sidenav gestreckt wird */
+  width: 200px;
+  flex-shrink: 0; /* Verhindert, dass die Sidenav schrumpft */
+}
+
+.sidenav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidenav a {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 24px;
+  text-decoration: none;
+  color: #a0aec0; /* Grauer Text für inaktive Links */
+  /* Setzt den initialen Text-Schatten für die Animation. */
+  /* Wir animieren den Schatten anstelle von font-weight, um einen sanften Übergang zu erzeugen. */
+  text-shadow: 0 0 0 transparent;
+  transition: all 0.2s ease-in-out;
+  position: relative; /* Wichtig für die Positionierung der Pseudoelemente */
+  z-index: 0;
+  overflow: hidden; /* Verhindert, dass der "Glow" über den Radius hinausragt */
+}
+
+.sidenav a:hover {
+  background-color: #2d3748; /* Dunklerer Hintergrund beim Hover */
+  color: #e2e8f0;
+}
+
+.sidenav a.active {
+  color: #ffffff; /* Weißer Text für den aktiven Link */
+  background: transparent; /* Der Hintergrund wird durch das ::after Pseudoelement gesetzt */
+  /* Erzeugt einen "Faux-Bold"-Effekt, der animiert werden kann. */
+  text-shadow: 0 0 0.75px currentColor;
+}
+
+/* Der leuchtende, rotierende Hintergrund */
+.sidenav a.active::before {
+  content: "";
+  position: absolute;
+  z-index: -2; /* Hinter alles legen */
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  background-color: #1a202c;
+  background-image: conic-gradient(
+    from var(--angle),
+    #8b5cf6,
+    /* Violett */ #ec4899,
+    /* Rosa */ #f97316,
+    /* Orange */ #fbbf24,
+    /* Gelb */ #38bdf8,
+    /* Hellblau */ #8b5cf6 /* Zurück zu Violett für einen nahtlosen Übergang */
+  );
+  animation: rotate-border 4s linear infinite;
+}
+
+/* Die innere Abdeckung, die den "Border"-Effekt erzeugt */
+.sidenav a.active::after {
+  content: "";
+  position: absolute;
+  z-index: -1; /* Zwischen ::before und dem Textinhalt */
+  left: 3px; /* Border-Dicke */
+  top: 3px; /* Border-Dicke */
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  background: #2d3748; /* Dunklerer Hintergrund für den aktiven Button */
+  border-radius: 22px; /* Etwas kleinerer Radius als der Parent */
+}
+
+@keyframes rotate-border {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Hauptinhalt */
+.content section {
+  height: 100vh; /* Nur zur Demonstration, damit man scrollen kann */
+  padding-top: 2rem;
+}

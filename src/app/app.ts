@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -12,6 +13,15 @@ import { Splashscreen } from './features/splashscreen/splashscreen';
   imports: [RouterOutlet, AsyncPipe, Splashscreen],
   templateUrl: './app.html',
   styleUrl: './app.css',
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-in', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('300ms ease-out', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class App {
   private store = inject(Store);
