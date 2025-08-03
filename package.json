@@ -27,6 +27,10 @@
     "@angular/forms": "^20.0.0",
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
+    "@ngxs/logger-plugin": "20.1.0",
+    "@ngxs/router-plugin": "^20.1.0",
+    "@ngxs/storage-plugin": "20.1.0",
+    "@ngxs/store": "^20.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
