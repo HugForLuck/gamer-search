@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions } from '@ngxs/store';
-import { ROUTE } from './routes.const';
 
 @Injectable({
   providedIn: 'root',
@@ -37,32 +36,4 @@ export class RouterService {
       window.history.replaceState({}, '', newUrl);
     }
   }
-
-  toSplashscreen() {
-    this.router.navigate(ROUTE.SPLASHSCREEN);
-  }
-
-  // constructor() {
-  //   this.checkAppIsLoading();
-  // }
-
-  // checkAppIsLoading() {
-  //   this.actions$
-  //     .pipe(
-  //       ofActionDispatched(AppActions.StartLoading),
-  //       tap(({ hasLoaded, isSignedIn }) => {
-  //         if (!hasLoaded) {
-  //           this.router.navigate([ROUTE.SPLASHSCREEN]);
-  //           return;
-  //         }
-
-  //         if (isSignedIn) {
-  //           this.router.navigate([ROUTE.HOME]);
-  //         } else {
-  //           this.router.navigate([ROUTE.NO_PERMISSION]);
-  //         }
-  //       })
-  //     )
-  //     .subscribe();
-  // }
 }

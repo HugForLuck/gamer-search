@@ -1,5 +1,6 @@
 import {
   ApplicationConfig,
+  inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
@@ -11,15 +12,18 @@ import { provideRouter } from '@angular/router';
 import { withNgxsLoggerPlugin } from '@ngxs/logger-plugin';
 import { withNgxsRouterPlugin } from '@ngxs/router-plugin';
 import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
-import { provideStore } from '@ngxs/store';
+import { provideStore, Store } from '@ngxs/store';
 import { environment } from '../environments/environment.development';
-import { checkAuth } from './app.helper';
+import { AppActions } from './app.actions';
 import { routes } from './app.routes';
 import { ngxsModuleOptions, ngxsStorageConfig, states } from './ngxs.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAppInitializer(async () => await checkAuth()),
+    // Dispatch CheckAuth action on application startup
+    provideAppInitializer(() => {
+      inject(Store).dispatch(new AppActions.CheckAuth());
+    }),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),

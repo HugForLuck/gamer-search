@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Navigate } from '@ngxs/router-plugin';
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AppActions } from './app.actions';
 import { APP_STATE_OPTIONS } from './app.state.const';
 import { AppStateModel } from './app.state.model';
@@ -15,36 +15,33 @@ type Context = StateContext<AppStateModel>;
 export class AppState {
   private auth = inject(AuthService);
   private router = inject(RouterService);
-  private store = inject(Store);
+
   @Selector()
-  static hasLoaded(state: AppStateModel): boolean {
+  static isLoading(state: AppStateModel): boolean {
     return state.isLoading;
   }
 
   @Action(AppActions.CheckAuth)
   async checkAuth(ctx: Context) {
+    // Set loading to true. The UI will now show the splashscreen.
+    ctx.patchState({ isLoading: true });
+
     try {
       const accessCode = this.router.getUrlAccessCode();
-      ctx.dispatch(new AppActions.StartLoading());
+      this.router.removeCodeFromUrl(
+        new URLSearchParams(window.location.search)
+      );
       const hasAccess = await this.auth.checkAccessAndSignIn(accessCode);
 
-      console.log('hasAccess: ', hasAccess);
-
       if (hasAccess) {
-        this.store.dispatch(new AppActions.AuthSuccess());
+        return ctx.dispatch(new AppActions.AuthSuccess());
       } else {
-        this.store.dispatch(new AppActions.AuthError());
+        return ctx.dispatch(new AppActions.AuthError());
       }
     } catch (error) {
       console.error('Authentication check failed', error);
-      this.store.dispatch(new AppActions.AuthError());
+      return ctx.dispatch(new AppActions.AuthError());
     }
-  }
-
-  @Action(AppActions.StartLoading)
-  startLoading(ctx: Context) {
-    ctx.patchState({ isLoading: true });
-    return this.router.toSplashscreen();
   }
 
   @Action(AppActions.AuthSuccess)
@@ -53,7 +50,6 @@ export class AppState {
       isLoading: false,
       isSignedIn: true,
     });
-
     ctx.dispatch(new Navigate(ROUTE.HOME));
   }
 

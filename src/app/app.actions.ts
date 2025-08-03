@@ -10,8 +10,4 @@ export namespace AppActions {
   export class AuthError {
     static readonly type = '[App] Auth Error';
   }
-
-  export class StartLoading {
-    static readonly type = '[App] Set App Has Loaded';
-  }
 }
