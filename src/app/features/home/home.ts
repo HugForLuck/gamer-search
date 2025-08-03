@@ -1,23 +1,30 @@
+import { NgComponentOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  inject,
   OnDestroy,
   QueryList,
+  Type,
   ViewChildren,
-  inject,
 } from '@angular/core';
+import { Contact } from './sections/contact/contact';
+import { LookinFor } from './sections/lookin-for/lookin-for';
+import { Profile } from './sections/profile/profile';
 
 interface Section {
   id: string;
   name: string;
+  // Wir fügen eine Eigenschaft hinzu, um den Komponententyp zu speichern
+  component: Type<any>;
 }
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [NgComponentOutlet],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -26,10 +33,9 @@ export class Home implements AfterViewInit, OnDestroy {
 
   // Liste der Sektionen für die Navigation und den Inhalt
   sections: Section[] = [
-    { id: 'profile', name: 'Profil' },
-    { id: 'games', name: 'Spiele' },
-    { id: 'friends', name: 'Freunde' },
-    { id: 'settings', name: 'Einstellungen' },
+    { id: 'profile', name: 'Profil', component: Profile },
+    { id: 'contact', name: 'Kontakt', component: Contact },
+    { id: 'looking-for', name: 'Wen suche ich?', component: LookinFor },
   ];
 
   // Greift auf die #section-Elemente im Template zu

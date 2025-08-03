@@ -16,7 +16,7 @@
   <main class="content">
     @for (section of sections; track section.id) {
     <section #section [id]="section.id">
-      <h1>{{ section.name }}</h1>
+      <ng-container [ngComponentOutlet]="section.component"></ng-container>
     </section>
     }
   </main>
